@@ -48,10 +48,7 @@ def get_portfolio():
         ]
 
     # Convert to lowercase
-    for index, ticker in enumerate(portfolio):
-        portfolio[index] = ticker.lower()
-
-    return portfolio
+    return [ticker.lower() for ticker in portfolio]
 
 
 def main():
