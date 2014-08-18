@@ -4,12 +4,13 @@
 Prices all the ticker items passed to it.
 """
 
+#TODO: Print confirmation ('Done.') only if successful.
+#TODO: Confirm that BTC prices were converted correctly to USD.
 #TODO: Define EMPTY_VAL in getTickers and import it to here.
 #TODO: Handle command line parms.
 
 import sys
-import json
-import urllib2
+import csv
 from getTickers import get_tickers
 from getPrices import get_prices
 
@@ -33,23 +34,31 @@ def price_tickers(tickers):
 
     # Price every ticker
     for index, ticker in enumerate(tickers):
-        if ticker != EMPTY_VAL:
-            if prices[ticker][1] == u'usd':
-                # This is priced in USD, so copy
-                #Copy ticker & price to portfolio
-                portfolio.append([ticker, prices[ticker][0]])
-            elif (prices[ticker][1] in prices 
-                and prices[prices[ticker][1]][1] == u'usd'):
-                # Not priced in USD *and* the conversion to USD does exist
-                portfolio.append([ticker, 
-                        prices[ticker][0] * prices[prices[ticker][1]][0]])
+        if ticker == EMPTY_VAL:
+            portfolio.append([EMPTY_VAL, EMPTY_VAL])
+        elif prices[ticker][1] == u'usd':
+            # This is priced in USD, so copy
+            #Copy ticker & price to portfolio
+            portfolio.append([ticker, prices[ticker][0]])
+        elif (prices[ticker][1] in prices 
+            and prices[prices[ticker][1]][1] == u'usd'):
+            # Not priced in USD *and* the conversion to USD does exist
+            portfolio.append([ticker, 
+                    prices[ticker][0] * prices[prices[ticker][1]][0]])
 
     return portfolio
 
 
+def save_portfolio_as_csv(portfolio, csv_filename):
+    with open(csv_filename, 'w') as fp:
+        a = csv.writer(fp, delimiter=',')
+        a.writerows(portfolio)
+
+
 def main():
     """Parse command line options (TODO)"""
-    print price_tickers(get_tickers())
+    save_portfolio_as_csv(price_tickers(get_tickers()), 'pricesForSpreadsheet.csv')
+    print 'done.'
 
 
 if __name__ == "__main__":
