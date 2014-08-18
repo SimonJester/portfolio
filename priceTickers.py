@@ -4,6 +4,7 @@
 Prices all the ticker items passed to it.
 """
 
+#TODO: Define EMPTY_VAL in getTickers and import it to here.
 #TODO: Handle command line parms.
 
 import sys
@@ -28,17 +29,20 @@ def price_tickers(tickers):
     # Initialize
     prices = get_prices()  #Dictionary of prices
     EMPTY_VAL = u''
-    portfolio = [[0.0, EMPTY_VAL]] * len(tickers)
+    portfolio = []
 
     # Price every ticker
     for index, ticker in enumerate(tickers):
-        if ticker == EMTPY_VAL:
-            # This is a blank spot used for spreadsheet layout, skip it
-            continue
-        elif prices[ticker][1] = u'usd':
-            # This is priced in USD, so copy
-            portfolio[index][0] = ticker  #Copy ticker
-            portfolio[index][PRICE] = prices[ticker][0]  #Copy price
+        if ticker != EMPTY_VAL:
+            if prices[ticker][1] == u'usd':
+                # This is priced in USD, so copy
+                #Copy ticker & price to portfolio
+                portfolio.append([ticker, prices[ticker][0]])
+            elif (prices[ticker][1] in prices 
+                and prices[prices[ticker][1]][1] == u'usd'):
+                # Not priced in USD *and* the conversion to USD does exist
+                portfolio.append([ticker, 
+                        prices[ticker][0] * prices[prices[ticker][1]][0]])
 
     return portfolio
 
