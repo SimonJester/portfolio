@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 """
-Retrieves current prices for a list of cryptocurrencies via JSON from:
-http://coinmarketcap.northpole.ro/api/all.json
+Retrieves current market prices for a list of cryptocurrencies 
+via JSON from online.
 """
 
 #TODO: Handle command line parms.
@@ -10,11 +10,14 @@ http://coinmarketcap.northpole.ro/api/all.json
 import sys
 import json
 import urllib2
-from getPortfolio import get_portfolio
 
 
-def get_prices(tickers):
-    """Get current prices for all items in portfolio"""
+def get_prices():
+    """
+    Get current prices and their units of measure.
+    This procedure returns a "prices" dictionary of this form:
+        { ticker, [price, unit] }
+    """
 
     # Get all prices from the Internet in JSON format
     url = 'http://coinmarketcap.northpole.ro/api/all.json'
@@ -22,21 +25,33 @@ def get_prices(tickers):
     json_data = json.loads(web_response.read())
     markets = json_data[u'markets']
 
-    # Convert list into dictionary
-    prices = [u''] * len(tickers)
-    portfolio = dict(zip(tickers, prices))
-
-    # Extract price info from JSON data
+    # Convert JSON market data into a dictionary
+    PRICE = 0
+    UNIT = 1
+    prices = {}
+    EMPTY_VAL = u''
     for market in markets:
-        if market[u'id'] in portfolio:
-            portfolio[market[u'id']] = market[u'price']
+        prices[market[u'id']] = [float(market[u'price']), market[u'currency']]
 
-    return portfolio
+    # Get list of non-market investments (no market price established yet)
+    nm_investments = {
+             u'eth': [0.0005, u'btc']
+            ,u'zrc': [0.0, u'btc']
+            ,u'swarmpre': [0.000194413, u'btc']
+            }
+
+    # Add non-market price info to the prices dictionary`
+    for ticker in nm_investments:
+        if prices[ticker][PRICE] == EMPTY_VAL:
+            prices[ticker][PRICE] = nm_investments[ticker][PRICE]
+            prices[ticker][UNIT] = nm_investments[ticker][UNIT]
+
+    return prices
 
 
 def main():
     """Parse command line options (TODO)"""
-    print get_prices(get_portfolio())
+    print get_prices()
 
 
 if __name__ == "__main__":
