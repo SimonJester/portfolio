@@ -17,6 +17,8 @@ def get_prices():
     Get current prices and their units of measure.
     This procedure returns a "prices" dictionary of this form:
         { ticker, [price, unit] }
+            ticker and unit are unicode strings.
+            price is float.
     """
 
     # Get all prices from the Internet in JSON format
@@ -26,8 +28,6 @@ def get_prices():
     markets = json_data[u'markets']
 
     # Convert JSON market data into a dictionary
-    PRICE = 0
-    UNIT = 1
     prices = {}
     EMPTY_VAL = u''
     for market in markets:
@@ -42,9 +42,8 @@ def get_prices():
 
     # Add non-market price info to the prices dictionary`
     for ticker in nm_investments:
-        if prices[ticker][PRICE] == EMPTY_VAL:
-            prices[ticker][PRICE] = nm_investments[ticker][PRICE]
-            prices[ticker][UNIT] = nm_investments[ticker][UNIT]
+        if ticker not in prices:
+            prices[ticker] = nm_investments[ticker]
 
     return prices
 
