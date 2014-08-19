@@ -6,6 +6,8 @@ via JSON from online.
 """
 
 #TODO: Handle command line parms.
+#TODO: As a last resort, if price cannot be determined then use the most recent price that we downloaded.
+#TODO: Provide alternate methods of retrieving price info such as directly accessing the exchanges.
 
 import sys
 import json

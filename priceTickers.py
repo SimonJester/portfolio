@@ -4,6 +4,7 @@
 Prices all the ticker items passed to it.
 """
 
+#TODO: Notify user when a USD ticker price cannot be determined.
 #TODO: Print confirmation ('Done.') only if successful.
 #TODO: Confirm that BTC prices were converted correctly to USD.
 #TODO: Define EMPTY_VAL in getTickers and import it to here.
