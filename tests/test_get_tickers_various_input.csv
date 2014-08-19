@@ -1,5 +1,6 @@
-BTC
-ltc
+UPPERCASE
+lowercase
+a
 This line is written using unicode characters.
 This line ends with CR LF (windows format).
 This line ends with CR only (unix format).
