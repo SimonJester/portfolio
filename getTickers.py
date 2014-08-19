@@ -5,7 +5,7 @@ Retrieves current list of ticker symbols that are in portfolio.
 All symbols are in lower-case.
 """
 
-#TODO: Get portfolio list from a text file.
+#TODO: Get portfolio list from a csv file that I created from my original spreadsheet.
 #TODO: Handle command line parms.
 
 import sys
