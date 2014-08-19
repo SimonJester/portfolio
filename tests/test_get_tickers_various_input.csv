@@ -1,0 +1,11 @@
+BTC
+ltc
+This line is written using unicode characters.
+This line ends with CR LF (windows format).
+This line ends with CR only (unix format).
+The next line has special characters.
+_~1!@#$%^&*()-_=+[{]}\|;:'"<.>?`
+The next line has an extra comma.
+silver,platinum
+The next line is blank.
+
