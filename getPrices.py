@@ -39,7 +39,7 @@ def get_prices():
     nm_investments = {
              u'eth': [0.0005, u'btc']
             ,u'zrc': [0.0, u'btc']
-            ,u'swarmpre': [0.000194413, u'btc']
+            ,u'swarm': [0.000194413, u'btc']
             }
 
     # Add non-market price info to the prices dictionary`

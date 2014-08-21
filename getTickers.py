@@ -35,7 +35,7 @@ def get_tickers():
             ,u'XPM'
             ,u'PPC'
             ,u'FTC'
-            ,u'SWARMPRE'
+            ,u'SWARM'
             ,u'DRK'
             ,u'MAID'
             ,u'TOR'
@@ -45,6 +45,7 @@ def get_tickers():
             ,u'MEC'
             ,u'QRK'
             ,u'XRP'
+            ,u'SJCX'
             ]
 
     # Convert to lowercase
