@@ -54,7 +54,7 @@ def get_tickers():
 
 def main():
     """Parse command line options (TODO)"""
-    print get_tickers()
+    print(get_tickers())
 
 
 if __name__ == "__main__":

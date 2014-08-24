@@ -52,7 +52,7 @@ def get_prices():
 
 def main():
     """Parse command line options (TODO)"""
-    print get_prices()
+    print(get_prices())
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ Prices all the ticker items passed to it.
 #TODO: Notify user when a USD ticker price cannot be determined.
 #TODO: Print confirmation ('Done.') only if successful.
 #TODO: Confirm that BTC prices were converted correctly to USD.
-#TODO: Define EMPTY_VAL in getTickers and import it to here.
+#TODO: Define EMPTY_VAL as #define in getTickers and import it to here.
 #TODO: Handle command line parms.
 
 import sys
@@ -20,8 +20,8 @@ from getPrices import get_prices
 def price_tickers(tickers):
     """
     Return a portfolio, which is a list of this format:
-        [ [ticker, price], ... ]
-    All prices will be in USD.
+        [ [ticker1, price1], [ticker2, price2], ... ]
+    All prices are in USD and floating point.
     This procedure retains the original sort order of the tickers and
     will not touch any blank items so as to retain spacing needed for 
     spreadsheet layout, so this info can be copied and pasted into a 
@@ -59,7 +59,7 @@ def save_portfolio_as_csv(portfolio, csv_filename):
 def main():
     """Parse command line options (TODO)"""
     save_portfolio_as_csv(price_tickers(get_tickers()), 'pricesForSpreadsheet.csv')
-    print 'done.'
+    print('Done.')
 
 
 if __name__ == "__main__":
