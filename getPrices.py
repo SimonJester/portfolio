@@ -12,6 +12,7 @@ via JSON from online.
 import sys
 import json
 import urllib2
+from __future__ import print_function
 
 
 def get_prices():

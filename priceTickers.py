@@ -14,6 +14,7 @@ import sys
 import csv
 from getTickers import get_tickers
 from getPrices import get_prices
+from __future__ import print_function
 
 
 
@@ -58,7 +59,7 @@ def save_portfolio_as_csv(portfolio, csv_filename):
 
 def main():
     """Parse command line options (TODO)"""
-    save_portfolio_as_csv(price_tickers(get_tickers()), 'pricesForSpreadsheet.csv')
+    save_portfolio_as_csv(price_tickers(get_tickers()), 'forSpreadsheet.csv')
     print('Done.')
 
 

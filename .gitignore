@@ -1,5 +1,5 @@
 # Resulting .csv file that running the script creates
-pricesForSpreadsheet.csv
+forSpreadsheet.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -9,6 +9,7 @@ All symbols are in lower-case.
 #TODO: Handle command line parms.
 
 import sys
+from __future__ import print_function
 
 
 def get_tickers():
