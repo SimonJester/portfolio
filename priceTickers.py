@@ -10,11 +10,11 @@ Prices all the ticker items passed to it.
 #TODO: Define EMPTY_VAL as #define in getTickers and import it to here.
 #TODO: Handle command line parms.
 
+
 import sys
 import csv
 from getTickers import get_tickers
 from getPrices import get_prices
-from __future__ import print_function
 
 
 
@@ -60,7 +60,7 @@ def save_portfolio_as_csv(portfolio, csv_filename):
 def main():
     """Parse command line options (TODO)"""
     save_portfolio_as_csv(price_tickers(get_tickers()), 'forSpreadsheet.csv')
-    print('Done.')
+    print 'Done.'
 
 
 if __name__ == "__main__":

@@ -9,7 +9,6 @@ All symbols are in lower-case.
 #TODO: Handle command line parms.
 
 import sys
-from __future__ import print_function
 
 
 def get_tickers():
@@ -55,7 +54,7 @@ def get_tickers():
 
 def main():
     """Parse command line options (TODO)"""
-    print(get_tickers())
+    print get_tickers()
 
 
 if __name__ == "__main__":
