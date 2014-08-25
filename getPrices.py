@@ -5,23 +5,30 @@ Retrieves current market prices for a list of cryptocurrencies
 via JSON from online.
 """
 
+#TODO: Pass the 'prices' dictionary by reference into each get_prices_... function.
 #TODO: Handle command line parms.
 #TODO: As a last resort, if price cannot be determined then use the most recent price that we downloaded.
 #TODO: Provide alternate methods of retrieving price info such as directly accessing the exchanges.
 
 import sys
-import json
 import urllib2
+from BeautifulSoup import BeautifulSoup
 
 
-def get_prices():
+def get_prices_from_coinmarketcap(prices=None):
     """
-    Get current prices and their units of measure.
+    Get current prices and their units of measure from coinmarketcap.
     This procedure returns a "prices" dictionary of this form:
         { ticker, [price, unit] }
             ticker and unit are unicode strings.
             price is float.
+    This function modifies the dictionary in the caller's scope, 
+    so it's equivalent to passing the 'prices' parameter by reference.
     """
+
+    # If no prices passed in, then define the prices dictionary here
+    if prices is None:
+        prices = {}
 
     # Get all prices from the Internet in JSON format
     url = 'http://coinmarketcap.northpole.ro/api/all.json'
@@ -30,7 +37,6 @@ def get_prices():
     markets = json_data[u'markets']
 
     # Convert JSON market data into a dictionary
-    prices = {}
     EMPTY_VAL = u''
     for market in markets:
         prices[market[u'id']] = [float(market[u'price']), market[u'currency']]
@@ -47,6 +53,38 @@ def get_prices():
         if ticker not in prices:
             prices[ticker] = nm_investments[ticker]
 
+    return prices
+
+
+def get_prices_from_kitco(prices=None):
+    """
+    Get current prices and their units of measure from kitco.
+    This procedure returns a "prices" dictionary of this form:
+        { ticker, [price, unit] }
+            ticker and unit are unicode strings.
+            price is float.
+    This function modifies the dictionary in the caller's scope, 
+    so it's equivalent to passing the 'prices' parameter by reference.
+    """
+
+    # If no prices passed in, then define the prices dictionary here
+    if prices is None:
+        prices = {}
+
+    # Scrape web site for prices of gold, silver & platinum
+    url = 'http://kitco.com'
+    soup = BeautifulSoup(urllib2.urlopen(url).read())
+    search_string = '<!-- Gold in USD -->'
+    print soup.firstText(search_string).contents[5]
+
+    return prices
+
+
+
+def get_prices():
+    prices = {}  #Initialize empty dictionary
+    #get_prices_from_coinmarketcap(prices)
+    get_prices_from_kitco(prices)
     return prices
 
 
