@@ -10,8 +10,11 @@ To install BeautifulSoup, run one of these commands:
     pip install beautifulsoup4
 Or, you can download the tarball and install it with:
     python setup.py install
+
+Note: I used regexpal.com to hone the regular expression.
 """
 
+#TODO: Get a faster source of info, but use kitco as a backup (kitco takes 30 sec).
 #TODO: Pass the 'prices' dictionary by reference into each get_prices_... function.
 #TODO: Handle command line parms.
 #TODO: As a last resort, if price cannot be determined then use the most recent price that we downloaded.
@@ -19,7 +22,8 @@ Or, you can download the tarball and install it with:
 
 import sys
 import urllib2
-from bs4 import BeautifulSoup
+import json
+import re
 
 
 def get_prices_from_coinmarketcap(prices=None):
@@ -81,11 +85,21 @@ def get_prices_from_kitco(prices=None):
     # Scrape web site for prices of gold, silver & platinum
     url = 'http://kitco.com'
     print "Please wait for Kitco site..."
-    soup = BeautifulSoup(urllib2.urlopen(url).read())
-    search_string = "Gold in USD"
-    print soup.find_all(text=search_string)
-    #print soup.find_all(text=search_string).contents[5]
+    web_page = urllib2.urlopen(url).read()
+    m = re.search(
+            'Gold in USD.+?(\d+\.\d+).+?kitcosilver\.com.+?(\d+\.\d+).+?liveplatinum\.html.+?(\d+\.\d+)', 
+            web_page, 
+            re.DOTALL)
+    #TODO: Handle exception for when no results are returned
+    gold_price = float(m.group(1))
+    silver_price = float(m.group(2))
+    platinum_price = float(m.group(3))
+    print "Gold: ${}".format(gold_price)
+    print "Silver: ${}".format(silver_price)
+    print "Platinum: ${}".format(platinum_price)
 
+    # Only enter the prices into the price dictionary that are missing
+    #TODO...
     return prices
 
 
