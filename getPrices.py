@@ -3,6 +3,13 @@
 """
 Retrieves current market prices for a list of cryptocurrencies 
 via JSON from online.
+
+To install BeautifulSoup, run one of these commands:
+    apt-get install python-bs4
+    easy_install beautifulsoup4
+    pip install beautifulsoup4
+Or, you can download the tarball and install it with:
+    python setup.py install
 """
 
 #TODO: Pass the 'prices' dictionary by reference into each get_prices_... function.
@@ -12,7 +19,7 @@ via JSON from online.
 
 import sys
 import urllib2
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 
 def get_prices_from_coinmarketcap(prices=None):
@@ -73,12 +80,13 @@ def get_prices_from_kitco(prices=None):
 
     # Scrape web site for prices of gold, silver & platinum
     url = 'http://kitco.com'
+    print "Please wait for Kitco site..."
     soup = BeautifulSoup(urllib2.urlopen(url).read())
-    search_string = '<!-- Gold in USD -->'
-    print soup.firstText(search_string).contents[5]
+    search_string = "Gold in USD"
+    print soup.find_all(text=search_string)
+    #print soup.find_all(text=search_string).contents[5]
 
     return prices
-
 
 
 def get_prices():
