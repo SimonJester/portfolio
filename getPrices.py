@@ -14,11 +14,12 @@ Or, you can download the tarball and install it with:
 Note: I used regexpal.com to hone the regular expression.
 """
 
-#TODO: Get a faster source of info, but use kitco as a backup (kitco takes 30 sec).
-#TODO: Pass the 'prices' dictionary by reference into each get_prices_... function.
-#TODO: Handle command line parms.
-#TODO: As a last resort, if price cannot be determined then use the most recent price that we downloaded.
+#TODO: If price cannot be determined then use the most recent price that we downloaded.
+#TODO: Use kitco as a backup source for metals prices (kitco takes 30 sec).
 #TODO: Provide alternate methods of retrieving price info such as directly accessing the exchanges.
+#TODO: Have a backup source for crypto prices.
+#TODO: Pass the 'prices' dictionary by reference into each get_prices_... function.
+#TODO: Convert EMPTY_VAL into a #define
 
 import sys
 import urllib2
@@ -28,7 +29,7 @@ import re
 
 def get_prices_for_cryptocurrencies(prices=None):
     """
-    Get current prices and their units of measure from coinmarketcap.
+    Get current prices and their units of measure from online.
     This procedure returns a "prices" dictionary of this form:
         { ticker, [price, unit] }
             ticker and unit are unicode strings.
@@ -50,16 +51,37 @@ def get_prices_for_cryptocurrencies(prices=None):
     # Convert JSON market data into a dictionary
     EMPTY_VAL = u''
     for market in markets:
-        prices[market[u'id']] = [float(market[u'price']), market[u'currency']]
+        ticker = market[u'id'] 
+        if ticker not in prices:  #Only save if it hasn't been saved yet
+            prices[ticker] = [float(market[u'price']), market[u'currency']]
+
+    return prices
+
+
+def get_non_market_prices_for_cryptocurrencies(prices=None):
+    """
+    Get current prices and their units of measure from a list defined by me.
+    This procedure returns a "prices" dictionary of this form:
+        { ticker, [price, unit] }
+            ticker and unit are unicode strings.
+            price is float.
+    This function modifies the dictionary in the caller's scope, 
+    so it's equivalent to passing the 'prices' parameter by reference.
+    """
+
+    # If no prices passed in, then define the prices dictionary here
+    if prices is None:
+        prices = {}
 
     # Get list of non-market investments (no market price established yet)
+    #TODO: Get this info from a text file
     nm_investments = {
              u'eth': [0.0005, u'btc']
             ,u'zrc': [0.0, u'btc']
             ,u'swarm': [0.000194413, u'btc']
             }
 
-    # Add non-market price info to the prices dictionary`
+    # Add non-market price info to the prices dictionary
     for ticker in nm_investments:
         if ticker not in prices:
             prices[ticker] = nm_investments[ticker]
@@ -67,7 +89,7 @@ def get_prices_for_cryptocurrencies(prices=None):
     return prices
 
 
-def get_prices_for_metals(prices=None, url=None, regex=None):
+def get_prices_for_metals(prices=None, url=None, regex=None, metals_sequence=None):
     """
     Get current prices and their units of measure from the chosen website.
     This procedure returns a "prices" dictionary of this form:
@@ -85,24 +107,29 @@ def get_prices_for_metals(prices=None, url=None, regex=None):
         url = 'http://money.cnn.com/data/commodities/'
     if regex is None:
         regex = 'Metals.+?Gold.+?Electronic.+?([\d,]+\.\d+).+?Silver.+?Electronic.+?([\d,]+\.\d+).+?Platinum.+?Electronic.+?([\d,]+\.\d+)' 
+    if metals_sequence is None:
+        # Define the order-of-occurrence of prices in regex
+        metals_sequence = [u'gold', u'silver', u'platinum']  
 
-    # Scrape web site for prices of gold, silver & platinum
+    # Scrape web site for metals prices
     web_page = urllib2.urlopen(url).read()
-    m = re.search(regex, web_page, re.DOTALL)
+    #TODO: Handle exception for when the URL is bad
+    matches = re.search(regex, web_page, re.DOTALL)
     #TODO: Handle exception for when no results are returned
-    gold_price = float(m.group(1).replace(",",""))
-    silver_price = float(m.group(2).replace(",",""))
-    platinum_price = float(m.group(3).replace(",",""))
-    print "Gold: ${}".format(gold_price)
-    print "Silver: ${}".format(silver_price)
-    print "Platinum: ${}".format(platinum_price)
+    #TODO: Make it so partial matches still succeed for some prices
+    
+    # Enter the prices into the price dictionary
+    for index, metal in enumerate(metals_sequence):
+        prices[metal] = [float(matches.group(index).replace(",","")), u'usd']
 
-    # Only enter the prices into the price dictionary that are missing
-    #TODO...
     return prices
 
 
 def get_prices():
+    """
+    Get prices for cryptocurrencies and metals and store them in one dictionary
+    called "prices".
+    """
     prices = {}
 
     #get_prices_for_cryptocurrencies(prices)
@@ -110,26 +137,30 @@ def get_prices():
     get_prices_for_metals(
         prices,
         'http://money.cnn.com/data/commodities/', 
-        'Metals.+?Gold.+?Electronic.+?([\d,]+\.\d+).+?Silver.+?Electronic.+?([\d,]+\.\d+).+?Platinum.+?Electronic.+?([\d,]+\.\d+)' 
+        'Metals.+?Gold.+?Electronic.+?([\d,]+\.\d+).+?Silver.+?Electronic.+?([\d,]+\.\d+).+?Platinum.+?Electronic.+?([\d,]+\.\d+)',
+        [u'gold', u'silver', u'platinum']
         )
 
     # Use Kitco as backup in case CNN is not available
     get_prices_for_metals(
         prices,
         'http://kitco.com',
-        'Gold in USD.+?([\d,]+\.\d+).+?kitcosilver\.com.+?([\d,]+\.\d+).+?liveplatinum\.html.+?([\d,]+\.\d+)' 
+        'Gold in USD.+?([\d,]+\.\d+).+?kitcosilver\.com.+?([\d,]+\.\d+).+?liveplatinum\.html.+?([\d,]+\.\d+)',
+        [u'gold', u'silver', u'platinum']
         )
 
     #get_prices_for_metals(
     #    prices,
     #    'http://bullion.nwtmint.com/spot-price-charts.php#tabs-2',
-    #    'Gold.+?([\d,]+\.\d+).+?Silver.+?([\d,]+\.\d+).+?Platinum.+?([\d,]+\.\d+)'
+    #    'Gold.+?([\d,]+\.\d+).+?Silver.+?([\d,]+\.\d+).+?Platinum.+?([\d,]+\.\d+)',
+    #    [u'gold', u'silver', u'platinum']
     #    )
 
     #get_prices_for_metals(
     #    prices,
     #    'http://www.24hgold.com/english/home.aspx',
-    #    'Gold.+?(\d+\.\d+).+?Silver.+?(\d+\.\d+).+?Platinum.+?(\d+\.\d+)'
+    #    'Gold.+?(\d+\.\d+).+?Silver.+?(\d+\.\d+).+?Platinum.+?(\d+\.\d+)',
+    #    [u'gold', u'silver', u'platinum']
     #    )
 
     return prices
