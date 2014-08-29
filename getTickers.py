@@ -46,6 +46,12 @@ def get_tickers():
             ,u'QRK'
             ,u'XRP'
             ,u'SJCX'
+            ,u''
+            ,u''
+            ,u''
+            ,u'Silver'
+            ,u'Gold'
+            ,u'Platinum'
             ]
 
     # Convert to lowercase

@@ -132,8 +132,9 @@ def get_prices():
     """
     prices = {}
 
-    #get_prices_for_cryptocurrencies(prices)
+    get_prices_for_cryptocurrencies(prices)
 
+    #TODO: Allow get_prices methods to somehow communicate if getting prices failed.
     get_prices_for_metals(
         prices,
         'http://money.cnn.com/data/commodities/', 
@@ -142,12 +143,14 @@ def get_prices():
         )
 
     # Use Kitco as backup in case CNN is not available
-    get_prices_for_metals(
-        prices,
-        'http://kitco.com',
-        'Gold in USD.+?([\d,]+\.\d+).+?kitcosilver\.com.+?([\d,]+\.\d+).+?liveplatinum\.html.+?([\d,]+\.\d+)',
-        [u'gold', u'silver', u'platinum']
-        )
+    #get_prices_for_metals(
+    #    prices,
+    #    'http://kitco.com',
+    #    'Gold in USD.+?([\d,]+\.\d+).+?kitcosilver\.com.+?([\d,]+\.\d+).+?liveplatinum\.html.+?([\d,]+\.\d+)',
+    #    [u'gold', u'silver', u'platinum']
+    #    )
+
+
 
     #get_prices_for_metals(
     #    prices,
