@@ -120,7 +120,7 @@ def get_prices_for_metals(prices=None, url=None, regex=None, metals_sequence=Non
     
     # Enter the prices into the price dictionary
     for index, metal in enumerate(metals_sequence):
-        prices[metal] = [float(matches.group(index).replace(",","")), u'usd']
+        prices[metal] = [float(matches.group(index+1).replace(",","")), u'usd']
 
     return prices
 
