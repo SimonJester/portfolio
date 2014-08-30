@@ -36,11 +36,11 @@ def price_tickers(tickers):
 
     # Price every ticker
     for index, ticker in enumerate(tickers):
+        #TODO: Handle case where ticker does not exist in prices.
         if ticker == EMPTY_VAL:
             portfolio.append([EMPTY_VAL, EMPTY_VAL])
         elif prices[ticker][1] == u'usd':
-            # This is priced in USD, so copy
-            #Copy ticker & price to portfolio
+            # This is priced in USD, so copy ticker & price to portfolio
             portfolio.append([ticker, prices[ticker][0]])
         elif (prices[ticker][1] in prices 
             and prices[prices[ticker][1]][1] == u'usd'):

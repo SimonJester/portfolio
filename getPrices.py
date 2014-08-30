@@ -133,6 +133,7 @@ def get_prices():
     prices = {}
 
     get_prices_for_cryptocurrencies(prices)
+    get_non_market_prices_for_cryptocurrencies(prices)
 
     #TODO: Allow get_prices methods to somehow communicate if getting prices failed.
     get_prices_for_metals(
