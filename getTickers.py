@@ -7,6 +7,7 @@ Input text must *not* have spaces or quotes around strings.
 All symbols returned are in lower-case Unicode.
 """
 
+#TODO: What happens if user violates the no-spaces and no-quotes restrictions?
 #TODO: Handle command line parms.
 
 import sys
@@ -21,12 +22,10 @@ def read_tickers(csv_filename):
         reader = csv.reader(
                 fp, 
                 delimiter=',', 
-                quotechar='"', 
                 quoting=csv.QUOTE_NONE)
         for row in reader:
             try:
-                #TODO: Convert to Unicode if needed
-                portfolio.append(row[0])
+                portfolio.append(unicode(row[0]))
             except IndexError:  #Handle empty rows
                 portfolio.append(u'')
         fp.close()
@@ -40,7 +39,6 @@ def write_tickers(portfolio, csv_filename):
         writer = csv.writer(
                 fp, 
                 delimiter=',', 
-                quotechar='"', 
                 quoting=csv.QUOTE_NONE)
         for ticker in portfolio:
             writer.writerow([ticker]) #Must make ticker a list to avoid commas
