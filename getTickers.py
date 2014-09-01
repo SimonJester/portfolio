@@ -2,58 +2,57 @@
 
 """
 Retrieves current list of ticker symbols that are in portfolio.
-All symbols are in lower-case.
+Input text must *not* have spaces or quotes around strings.
+
+All symbols returned are in lower-case Unicode.
 """
 
-#TODO: Get portfolio list from a csv file that I created from my original spreadsheet.
 #TODO: Handle command line parms.
 
 import sys
+import os
+import csv
 
 
-def get_tickers():
+def read_tickers(csv_filename):
+    """Read ticker symbols from first column of a csv file"""
+    portfolio = []
+    with open(csv_filename, 'rb') as fp:
+        reader = csv.reader(
+                fp, 
+                delimiter=',', 
+                quotechar='"', 
+                quoting=csv.QUOTE_NONE)
+        for row in reader:
+            try:
+                #TODO: Convert to Unicode if needed
+                portfolio.append(row[0])
+            except IndexError:  #Handle empty rows
+                portfolio.append(u'')
+        fp.close()
+    return portfolio
+
+
+def write_tickers(portfolio, csv_filename):
+    """Write ticker symbols to a one-column csv file"""
+    #TODO: Handle empty string for csv_filename.
+    with open(csv_filename, 'wb') as fp:
+        writer = csv.writer(
+                fp, 
+                delimiter=',', 
+                quotechar='"', 
+                quoting=csv.QUOTE_NONE)
+        for ticker in portfolio:
+            writer.writerow([ticker]) #Must make ticker a list to avoid commas
+        fp.close()
+
+
+def get_tickers(csv_filename=None):
     """Return a list of ticker symbols for entire portfolio"""
-    # Currently this list is hardcoded to match my spreadsheet layout
-    portfolio = [
-             u'BTC'
-            ,u'LTC'
-            ,u'ETH'
-            ,u''
-            ,u''
-            ,u'ZRC'
-            ,u'NMC'
-            ,u'MSC'
-            ,u'ANC'
-            ,u'NXT'
-            ,u'XCP'
-            ,u''
-            ,u''
-            ,u'PTS'
-            ,u'BTSX'
-            ,u''
-            ,u''
-            ,u'XPM'
-            ,u'PPC'
-            ,u'FTC'
-            ,u'SWARM'
-            ,u'DRK'
-            ,u'MAID'
-            ,u'TOR'
-            ,u''
-            ,u''
-            ,u'DOGE'
-            ,u'MEC'
-            ,u'QRK'
-            ,u'XRP'
-            ,u'SJCX'
-            ,u''
-            ,u''
-            ,u''
-            ,u'Silver'
-            ,u'Gold'
-            ,u'Platinum'
-            ]
-
+    if csv_filename is None:
+        #TODO: Deteremine if the HOME env variable is ever *not* defined.
+        csv_filename = '{}/.portfolio/tickers.csv'.format(os.getenv("HOME"))
+    portfolio = read_tickers(csv_filename)
     # Convert to lowercase
     return [ticker.lower() for ticker in portfolio]
 

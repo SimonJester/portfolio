@@ -51,15 +51,19 @@ def price_tickers(tickers):
     return portfolio
 
 
-def save_portfolio_as_csv(portfolio, csv_filename):
-    with open(csv_filename, 'w') as fp:
-        a = csv.writer(fp, delimiter=',')
-        a.writerows(portfolio)
+def write_portfolio(portfolio, csv_filename):
+    with open(csv_filename, 'wb') as fp:
+        writer = csv.writer(
+                fp, 
+                delimiter=',',
+                quotechar='"', 
+                quoting=csv.QUOTE_NONE)
+        writer.writerows(portfolio)
 
 
 def main():
     """Parse command line options (TODO)"""
-    save_portfolio_as_csv(price_tickers(get_tickers()), 'forSpreadsheet.csv')
+    write_portfolio(price_tickers(get_tickers()), 'forSpreadsheet.csv')
     print 'Done.'
 
 
