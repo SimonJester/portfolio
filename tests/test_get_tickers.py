@@ -15,25 +15,25 @@ from getTickers import read_tickers
 def test_get_tickers_unix():
     """Test various types of inputs with unix line endings"""
     actual = get_tickers('data_get_tickers_unix_input.csv')
-    expected = read_tickers('data_get_tickers_unix_expected.csv')
+    expected = read_tickers('data_get_tickers_expected.csv')
     assert actual == expected
 
 def test_get_tickers_win():
     """Test Windows line endings"""
     actual = get_tickers('data_get_tickers_win_input.csv')
-    expected = read_tickers('data_get_tickers_win_expected.csv')
+    expected = read_tickers('data_get_tickers_expected.csv')
     assert actual == expected
 
 def test_get_tickers_mac():
     """Test Mac line endings"""
     actual = get_tickers('data_get_tickers_mac_input.csv')
-    expected = read_tickers('data_get_tickers_mac_expected.csv')
+    expected = read_tickers('data_get_tickers_expected.csv')
     assert actual == expected
 
 def test_get_tickers_unicode():
     """Test Unicode characters"""
     actual = get_tickers('data_get_tickers_unicode_input.csv')
-    expected = read_tickers('data_get_tickers_unicode_expected.csv')
+    expected = read_tickers('data_get_tickers_expected.csv')
     assert actual == expected
 
 def test_get_tickers_empty_file():
