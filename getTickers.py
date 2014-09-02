@@ -2,12 +2,15 @@
 
 """
 Retrieves current list of ticker symbols that are in portfolio.
-Input text must *not* have spaces or quotes around strings.
+
+Input text should not have spaces or quotes around strings 
+because those characters will also become part of the ticker name.
+If a comma appears in any text, then only the text prior to the 
+comma will be used.
 
 All symbols returned are in lower-case Unicode.
 """
 
-#TODO: What happens if user violates the no-spaces and no-quotes restrictions?
 #TODO: Handle command line parms.
 
 import sys
@@ -34,7 +37,6 @@ def read_tickers(csv_filename):
 
 def write_tickers(portfolio, csv_filename):
     """Write ticker symbols to a one-column csv file"""
-    #TODO: Handle empty string for csv_filename.
     with open(csv_filename, 'wb') as fp:
         writer = csv.writer(
                 fp, 
@@ -57,8 +59,7 @@ def get_tickers(csv_filename=None):
 
 def main():
     """Parse command line options (TODO)"""
-    #print get_tickers()
-    read_tickers('this-file-does-not-exist.csv')
+    print get_tickers()
 
 
 if __name__ == "__main__":
