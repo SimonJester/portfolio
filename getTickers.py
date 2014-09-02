@@ -57,7 +57,8 @@ def get_tickers(csv_filename=None):
 
 def main():
     """Parse command line options (TODO)"""
-    print get_tickers()
+    #print get_tickers()
+    read_tickers('this-file-does-not-exist.csv')
 
 
 if __name__ == "__main__":

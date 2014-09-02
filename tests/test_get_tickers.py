@@ -13,27 +13,33 @@ from getTickers import read_tickers
 
 
 def test_get_tickers_unix():
-    # Test various types of inputs with unix line endings
+    """Test various types of inputs with unix line endings"""
     actual = get_tickers('data_get_tickers_unix_input.csv')
     expected = read_tickers('data_get_tickers_unix_expected.csv')
     assert actual == expected
 
 def test_get_tickers_win():
-    # Test Windows line endings
+    """Test Windows line endings"""
     actual = get_tickers('data_get_tickers_win_input.csv')
     expected = read_tickers('data_get_tickers_win_expected.csv')
     assert actual == expected
 
 def test_get_tickers_mac():
-    # Test Mac line endings
+    """Test Mac line endings"""
     actual = get_tickers('data_get_tickers_mac_input.csv')
     expected = read_tickers('data_get_tickers_mac_expected.csv')
     assert actual == expected
 
 def test_get_tickers_unicode():
-    # Test Unicode characters
+    """Test Unicode characters"""
     actual = get_tickers('data_get_tickers_unicode_input.csv')
     expected = read_tickers('data_get_tickers_unicode_expected.csv')
+    assert actual == expected
+
+def test_get_tickers_empty_file():
+    """Test empty file file"""
+    expected = []
+    actual = get_tickers('data_read_tickers_empty_file_input.csv')
     assert actual == expected
 
 
@@ -42,6 +48,7 @@ def main():
     test_get_tickers_win()
     test_get_tickers_mac()
     test_get_tickers_unicode()
+    test_get_tickers_empty_file()
 
 
 if __name__ == '__main__':
