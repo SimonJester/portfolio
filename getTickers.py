@@ -53,7 +53,6 @@ def get_tickers(csv_filename=None):
         #TODO: Deteremine if the HOME env variable is ever *not* defined.
         csv_filename = '{}/.portfolio/tickers.csv'.format(os.getenv("HOME"))
     portfolio = read_tickers(csv_filename)
-    # Convert to lowercase
     return [ticker.lower() for ticker in portfolio]
 
 
