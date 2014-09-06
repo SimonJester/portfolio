@@ -17,7 +17,6 @@ from getTickers import get_tickers
 from getPrices import get_prices
 
 
-
 def price_tickers(tickers):
     """
     Return a portfolio, which is a list of this format:
@@ -37,6 +36,7 @@ def price_tickers(tickers):
     # Price every ticker
     for index, ticker in enumerate(tickers):
         #TODO: Handle case where ticker does not exist in prices.
+        #TODO: When conversion unit is not available is it graceful?
         if ticker == EMPTY_VAL:
             portfolio.append([EMPTY_VAL, EMPTY_VAL])
         elif prices[ticker][1] == u'usd':
