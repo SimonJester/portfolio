@@ -38,9 +38,18 @@ def test_get_tickers_unicode():
 
 def test_get_tickers_empty_file():
     """Test empty file file"""
-    expected = []
     actual = get_tickers('data_read_tickers_empty_file_input.csv')
+    expected = []
     assert actual == expected
+
+def test_get_tickers_nonexistent_file():
+    """Test empty file file"""
+    try:
+        get_tickers('xxxxxxxx-non-existent-file-xxxxxxx.csv')
+    except IOError:
+        assert True
+    else:
+        assert False
 
 
 def main():
@@ -49,6 +58,7 @@ def main():
     test_get_tickers_mac()
     test_get_tickers_unicode()
     test_get_tickers_empty_file()
+    test_get_tickers_nonexistent_file()
 
 
 if __name__ == '__main__':
