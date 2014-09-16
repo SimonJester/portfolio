@@ -49,8 +49,8 @@ def price_tickers(tickers):
                 portfolio.append([ticker, 
                         prices[ticker][0] * prices[prices[ticker][1]][0]])
         except KeyError:
-            print "Price not available for {}".format(ticker)
-            portfolio.append([EMPTY_VAL, EMPTY_VAL])
+            print " * Price not available for {}".format(ticker)
+            portfolio.append([ticker, EMPTY_VAL])
 
     return portfolio
 
