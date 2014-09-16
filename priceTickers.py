@@ -37,16 +37,20 @@ def price_tickers(tickers):
     for index, ticker in enumerate(tickers):
         #TODO: Handle case where ticker does not exist in prices.
         #TODO: When conversion unit is not available is it graceful?
-        if ticker == EMPTY_VAL:
+        try:
+            if ticker == EMPTY_VAL:
+                portfolio.append([EMPTY_VAL, EMPTY_VAL])
+            elif prices[ticker][1] == u'usd':
+                # This is priced in USD, so copy ticker & price to portfolio
+                portfolio.append([ticker, prices[ticker][0]])
+            elif (prices[ticker][1] in prices 
+                and prices[prices[ticker][1]][1] == u'usd'):
+                # Not priced in USD *and* the conversion to USD does exist
+                portfolio.append([ticker, 
+                        prices[ticker][0] * prices[prices[ticker][1]][0]])
+        except KeyError:
+            print "Price not available for {}".format(ticker)
             portfolio.append([EMPTY_VAL, EMPTY_VAL])
-        elif prices[ticker][1] == u'usd':
-            # This is priced in USD, so copy ticker & price to portfolio
-            portfolio.append([ticker, prices[ticker][0]])
-        elif (prices[ticker][1] in prices 
-            and prices[prices[ticker][1]][1] == u'usd'):
-            # Not priced in USD *and* the conversion to USD does exist
-            portfolio.append([ticker, 
-                    prices[ticker][0] * prices[prices[ticker][1]][0]])
 
     return portfolio
 
