@@ -52,14 +52,17 @@ def get_tickers(csv_filename=None):
     """Return a list of ticker symbols for entire portfolio"""
     if csv_filename is None:
         #TODO: Deteremine if the HOME env variable is ever *not* defined.
+        #TODO: Test on Windows.
         csv_filename = '{}/.portfolio/tickers.csv'.format(os.getenv("HOME"))
     try:
         portfolio = read_tickers(csv_filename)
     except IOError:
-        print("* Error: Tickers File is Missing.", file=sys.stderr)
-        print("   Create a csv file and save it as {}".format(csv_filename), file=sys.stderr)
-        print("   It should have one column containing ticker symbols.", file=sys.stderr)
-        return []
+        print("*** Error: Tickers File is Missing.", file=sys.stderr)
+        print("      Create a csv file and save it as {}".format(csv_filename), 
+                file=sys.stderr)
+        print("      It should contain one column of text containing ticker symbols without any commas.", 
+                file=sys.stderr)
+        raise
     else:
         return [ticker.lower() for ticker in portfolio]
 

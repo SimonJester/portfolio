@@ -50,7 +50,8 @@ def price_tickers(tickers):
                 portfolio.append([ticker, 
                         prices[ticker][0] * prices[prices[ticker][1]][0]])
         except KeyError:
-            print(" * Price not available for {}".format(ticker), file=sys.stderr)
+            print(" * Price not available for {}".format(ticker), 
+                    file=sys.stderr)
             portfolio.append([ticker, EMPTY_VAL])
 
     return portfolio
@@ -68,8 +69,13 @@ def write_portfolio(portfolio, csv_filename):
 
 def main():
     """Parse command line options (TODO)"""
-    write_portfolio(price_tickers(get_tickers()), 'forSpreadsheet.csv')
-    print('Done.', file=sys.stderr)
+    try:
+        my_tickers = get_tickers()
+        my_portfolio = price_tickers(my_tickers)
+        write_portfolio(my_portfolio, 'forSpreadsheet.csv')
+        print('Done.', file=sys.stderr)
+    except IOError:
+        pass #Proper explanation is provided by the called functions
 
 
 if __name__ == "__main__":
