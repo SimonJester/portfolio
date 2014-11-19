@@ -21,6 +21,7 @@ Note: I used regexpal.com to hone the regular expression.
 #TODO: Pass the 'prices' dictionary by reference into each get_prices_... function.
 #TODO: Convert EMPTY_VAL into a #define
 
+from __future__ import print_function
 import sys
 import urllib2
 import json
@@ -172,7 +173,7 @@ def get_prices():
 
 def main():
     """Parse command line options (TODO)"""
-    print get_prices()
+    print(get_prices())
 
 
 if __name__ == "__main__":

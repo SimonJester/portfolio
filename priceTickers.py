@@ -11,6 +11,7 @@ Prices all the ticker items passed to it.
 #TODO: Handle command line parms.
 
 
+from __future__ import print_function  #This *must* be the first line in the module.
 import sys
 import csv
 from getTickers import get_tickers
@@ -49,7 +50,7 @@ def price_tickers(tickers):
                 portfolio.append([ticker, 
                         prices[ticker][0] * prices[prices[ticker][1]][0]])
         except KeyError:
-            print " * Price not available for {}".format(ticker)
+            print(" * Price not available for {}".format(ticker), file=sys.stderr)
             portfolio.append([ticker, EMPTY_VAL])
 
     return portfolio
@@ -68,7 +69,7 @@ def write_portfolio(portfolio, csv_filename):
 def main():
     """Parse command line options (TODO)"""
     write_portfolio(price_tickers(get_tickers()), 'forSpreadsheet.csv')
-    print 'Done.'
+    print('Done.', file=sys.stderr)
 
 
 if __name__ == "__main__":

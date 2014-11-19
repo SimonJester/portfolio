@@ -13,6 +13,7 @@ All symbols returned are in lower-case Unicode.
 
 #TODO: Handle command line parms.
 
+from __future__ import print_function
 import sys
 import os
 import csv
@@ -55,9 +56,9 @@ def get_tickers(csv_filename=None):
     try:
         portfolio = read_tickers(csv_filename)
     except IOError:
-        print "* Error: Tickers File is Missing."
-        print "  Create a csv file and save it as {}".format(csv_filename)
-        print "  It should have one column containing ticker symbols."
+        print("* Error: Tickers File is Missing.", file=sys.stderr)
+        print("   Create a csv file and save it as {}".format(csv_filename), file=sys.stderr)
+        print("   It should have one column containing ticker symbols.", file=sys.stderr)
         return []
     else:
         return [ticker.lower() for ticker in portfolio]
@@ -65,7 +66,7 @@ def get_tickers(csv_filename=None):
 
 def main():
     """Parse command line options (TODO)"""
-    print get_tickers()
+    print(get_tickers())
 
 
 if __name__ == "__main__":
