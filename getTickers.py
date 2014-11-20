@@ -17,6 +17,8 @@ from __future__ import print_function
 import sys
 import os
 import csv
+from configPortfolio import portfolio_config_path as config_path
+from configPortfolio import csv_filename_tickers as tickers_filename
 
 
 def read_tickers(csv_filename):
@@ -53,7 +55,7 @@ def get_tickers(csv_filename=None):
     if csv_filename is None:
         #TODO: Deteremine if the HOME env variable is ever *not* defined.
         #TODO: Test on Windows.
-        csv_filename = '{}/.portfolio/tickers.csv'.format(os.getenv("HOME"))
+        csv_filename = '{}/{}'.format(config_path, tickers_filename)
     try:
         portfolio = read_tickers(csv_filename)
     except IOError:

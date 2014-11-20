@@ -13,9 +13,12 @@ Prices all the ticker items passed to it.
 
 from __future__ import print_function  #This *must* be the first line in the module.
 import sys
+import os
 import csv
 from getTickers import get_tickers
 from getPrices import get_prices
+from configPortfolio import portfolio_config_path as config_path
+from configPortfolio import csv_filename_ticker_prices as result_filename
 
 
 def price_tickers(tickers):
@@ -57,7 +60,14 @@ def price_tickers(tickers):
     return portfolio
 
 
-def write_portfolio(portfolio, csv_filename):
+def write_portfolio(portfolio, csv_filename=None):
+    """
+    Write the portfolio (with current prices) to a CSV file.
+    If the the optional csv_filename parameter is omitted, 
+    then the portfolio is written to a standard location.
+    """
+    if csv_filename is None:
+        csv_filename = '{}/{}'.format(config_path, result_filename)
     with open(csv_filename, 'wb') as fp:
         writer = csv.writer(
                 fp, 
@@ -70,9 +80,10 @@ def write_portfolio(portfolio, csv_filename):
 def main():
     """Parse command line options (TODO)"""
     try:
+        print('Getting ticker prices...', file=sys.stderr)
         my_tickers = get_tickers()
         my_portfolio = price_tickers(my_tickers)
-        write_portfolio(my_portfolio, 'forSpreadsheet.csv')
+        write_portfolio(my_portfolio)
         print('Done.', file=sys.stderr)
     except IOError:
         pass #Proper explanation is provided by the called functions
