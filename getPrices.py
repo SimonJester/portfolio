@@ -14,6 +14,7 @@ Or, you can download the tarball and install it with:
 Note: I used regexpal.com to hone the regular expression.
 """
 
+#TODO: Look up prices on coinmarketcap.com if it can't be found elsewhere.
 #TODO: If price cannot be determined then use the most recent price that we downloaded.
 #TODO: Use kitco as a backup source for metals prices (kitco takes 30 sec).
 #TODO: Provide alternate methods of retrieving price info such as directly accessing the exchanges.
